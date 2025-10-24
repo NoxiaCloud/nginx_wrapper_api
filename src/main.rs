@@ -24,7 +24,7 @@ async fn auth(
     req: ServiceRequest,
     _credentials: BearerAuth
 ) -> Result<ServiceRequest, (ActixError, ServiceRequest)> {
-    let expected_key = env::var("API_KEY").unwrap_or_default();
+    let expected_key = env::var("API_KEY").expect("API_KEY must be set in .env");
 
     let auth_header = req
         .headers()
