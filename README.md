@@ -7,7 +7,7 @@ REST API written in Rust designed to manage NGINX safely and programmatically, i
 Build (production): `cargo run build`  
 Development (local server): `cargo run dev`
 
-Example usage: `curl -H "Authorization: Bearer password123" http://127.0.0.1:8080/test`
+Example usage: `curl -H "Authorization: Bearer <API_KEY>" http://127.0.0.1:8080/service/status`
 
 Dependencies:
 ```
@@ -27,3 +27,31 @@ PORT="8080"
 WORKERS=""
 ```
 <sub>⚠️ Never expose your real API key</sub>
+
+### API Documentation
+#### Service:
+
+/service/start `[POST]`
+- Start NGINX
+- Success: `{"message": "Successfully started NGINX"}`
+- Error: `{"message": "Failed to start NGINX", "error": "<error>"}`
+
+/service/stop `[POST]`
+- Stop NGINX
+- Success: `{"message": "Successfully stopped NGINX"}`
+- Error: `{"message": "Failed to stop NGINX", "error": "<error>"}`
+
+/service/reload `[POST]`
+- Reload NGINX
+- Success: `{"message": "Successfully reloaded NGINX"}`
+- Error: `{"message": "Failed to reload NGINX", "error": "<error>"}`
+
+/service/restart `[POST]`
+- Restart NGINX
+- Success: `{"message": "Successfully restarted NGINX"}`
+- Error: `{"message": "Failed to restart NGINX", "error": "<error>"}`
+
+/service/status `[GET]`
+- Fetch NGINX status
+- Success: `{"message": "NGINX status fetched successfully", "status": "<output>"}`
+- Error: `{"message": "Failed to fetch NGINX status", "error": "<error>"}`

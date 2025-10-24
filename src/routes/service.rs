@@ -1,4 +1,4 @@
-use actix_web::{ post, HttpResponse, Responder };
+use actix_web::{ post, get, HttpResponse, Responder };
 use serde_json::json;
 use std::process::Command;
 
@@ -62,12 +62,12 @@ pub async fn restart() -> impl Responder {
     }
 }
 
-#[post("/service/status")]
+#[get("/service/status")]
 pub async fn status() -> impl Responder {
     match invoke_systemctl("status") {
         Ok(Some(stdout)) =>
-            HttpResponse::Ok().json(json!({"message": "NGINX status fetched", "status": stdout})),
-        Ok(None) => HttpResponse::Ok().json(json!({"message": "NGINX status fetched"})),
+            HttpResponse::Ok().json(json!({"message": "NGINX status fetched successfully", "status": stdout})),
+        Ok(None) => HttpResponse::Ok().json(json!({"message": "NGINX status fetched successfully"})),
         Err(err) =>
             HttpResponse::InternalServerError().json(
                 json!({"message": "Failed to fetch NGINX status", "error": err})
