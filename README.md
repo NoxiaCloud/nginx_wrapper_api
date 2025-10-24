@@ -4,29 +4,26 @@ REST API written in Rust designed to manage NGINX safely and programmatically, i
 <sub>ℹ️ This project currently only supports Linux systems where NGINX is managed by `systemd`</sub>  
 <sub>⚠️ Make sure to use HTTPS in production (usually behind a reverse proxy like NGINX or Caddy)</sub>
 
-Build (production): `cargo run build`  
-Development (local server): `cargo run dev`
+Build (production): `cargo build --release`  
+Development (local server): `cargo run`
 
 Example usage: `curl -H "Authorization: Bearer <API_KEY>" http://127.0.0.1:8080/service/status`
 
-Dependencies:
-```
-actix-web = "4.11.0"
-actix-web-httpauth = "0.8.2"
-dotenvy = "0.15.7"
-num_cpus = "1.17.0"
-serde_json = "1.0"
-```
-
 Example configuration (.env):
 
-```
-API_KEY="Your secret API key"
-HOST="127.0.0.1"
-PORT="8080"
-WORKERS=""
-```
+| Variable  | Description             |
+|-----------|-------------------------|
+| API_KEY   | Your secret API key     |
+| HOST      | Server host             |
+| PORT      | Server port             |
+| WORKERS   | Number of worker threads|
+
 <sub>⚠️ Never expose your real API key</sub>
+
+### Prerequisites:
+- systemd-enabled Linux system
+- NGINX
+- Certbot
 
 ### API Documentation
 #### Service:
