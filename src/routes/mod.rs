@@ -1,11 +1,7 @@
-pub mod test;
-pub mod health;
+pub mod service;
 
 use actix_web::web;
 
-
 pub fn init_routes(cfg: &mut web::ServiceConfig) {
-
-    test::configure_routes(cfg);
-    health::configure_routes(cfg);
+    service::cfg_routes(cfg);
 }
