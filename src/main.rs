@@ -52,10 +52,17 @@ async fn main() -> std::io::Result<()> {
         .parse::<u16>()
         .expect("PORT must be a valid number");
 
+    let workers = env
+        ::var("WORKERS")
+        .ok()
+        .and_then(|v| v.parse::<usize>().ok())
+        .unwrap_or_else(|| num_cpus::get());
+
     let addr = format!("{}:{}", host, port);
     println!("Server running at http://{}", addr);
 
     HttpServer::new(|| { App::new().wrap(HttpAuthentication::bearer(auth)).configure(init_routes) })
+        .workers(workers)
         .bind(addr)?
         .run().await
 }
