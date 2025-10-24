@@ -8,6 +8,7 @@ use actix_web::error::ErrorUnauthorized;
 use routes::init_routes;
 use std::env;
 use std::path::PathBuf;
+use num_cpus;
 
 fn load_dotenv() {
     let exe_dir: PathBuf = env::current_exe().unwrap().parent().unwrap().to_path_buf();
