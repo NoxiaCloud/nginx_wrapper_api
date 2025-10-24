@@ -1,7 +1,7 @@
 # nginx_wrapper_api
 REST API written in Rust designed to manage NGINX safely and programmatically, including SSL support via Let's Encrypt.
 
-<small>Make sure to host this behind HTTPS in production (usually behind a reverse proxy like NGINX or Caddy)</small>
+<sub><sup>⚠️ Make sure to host this behind HTTPS in production (usually behind a reverse proxy like NGINX or Caddy)</sup></sub>
 
 Build (production): `cargo run build`  
 Development (local server): `cargo run dev`
@@ -22,4 +22,4 @@ API_KEY="Your secret API key"
 HOST="127.0.0.1"
 PORT="8080"
 ```
-<small>⚠️ Never expose your real API key</small>
+<sub><sup>⚠️ Never expose your real API key</sup></sub>
