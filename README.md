@@ -2,7 +2,7 @@
 REST API written in Rust designed to manage NGINX safely and programmatically, including SSL support via Let's Encrypt.
 
 <sub>ℹ️ This project currently only supports Linux systems where NGINX is managed by `systemd`</sub>  
-<sub>⚠️ Make sure to host this behind HTTPS in production (usually behind a reverse proxy like NGINX or Caddy)</sub>
+<sub>⚠️ Make sure to use HTTPS in production (usually behind a reverse proxy like NGINX or Caddy)</sub>
 
 Build (production): `cargo run build`  
 Development (local server): `cargo run dev`
