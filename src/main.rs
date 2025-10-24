@@ -60,7 +60,7 @@ async fn main() -> std::io::Result<()> {
         .unwrap_or_else(|| num_cpus::get());
 
     let addr = format!("{}:{}", host, port);
-    println!("Server running at http://{}", addr);
+    println!("Server running at http://{} with {} workers", addr, workers);
 
     HttpServer::new(|| { App::new().wrap(HttpAuthentication::bearer(auth)).configure(init_routes) })
         .workers(workers)
