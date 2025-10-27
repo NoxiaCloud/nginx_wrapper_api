@@ -11,6 +11,7 @@ use actix_web_httpauth::{ middleware::HttpAuthentication, extractors::bearer::Be
 use routes::init_routes;
 use std::env;
 use num_cpus;
+use std::sync::Arc;
 
 fn load_dotenv() -> Result<(), Box<dyn std::error::Error>> {
     if dotenvy::dotenv().is_ok() {
@@ -28,30 +29,17 @@ fn load_dotenv() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
 
-    println!("No .env file found, using system environment variables");
+    println!("WARNING: No .env file found, using system environment variables");
     Ok(())
 }
 
 async fn auth(
     req: ServiceRequest,
-    _credentials: BearerAuth
+    credentials: BearerAuth,
+    expected_key: Arc<String>
 ) -> Result<ServiceRequest, (ActixError, ServiceRequest)> {
-    let expected_key = match env::var("API_KEY") {
-        Ok(key) if !key.is_empty() => key,
-        _ => {
-            eprintln!("Warning: API_KEY not set or empty, authentication disabled");
-            return Ok(req);
-        }
-    };
-
-    let auth_header = req
-        .headers()
-        .get("Authorization")
-        .and_then(|v| v.to_str().ok())
-        .unwrap_or("");
-
-    let token = auth_header.strip_prefix("Bearer ").unwrap_or("");
-    let is_valid = !token.is_empty() && token == expected_key;
+    let token = credentials.token();
+    let is_valid = !token.is_empty() && token == expected_key.as_str();
 
     if is_valid {
         Ok(req)
@@ -63,8 +51,16 @@ async fn auth(
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     if let Err(e) = load_dotenv() {
-        eprintln!("Warning: Failed to load .env file: {}", e);
+        eprintln!("WARNING: Failed to load .env file: {}", e);
     }
+
+    let api_key = match env::var("API_KEY") {
+        Ok(ref key) if !key.is_empty() => Arc::new(key.clone()),
+        _ => {
+            eprintln!("ERROR: API_KEY not set, server will not start.");
+            std::process::exit(1);
+        }
+    };
 
     let host = env::var("HOST").unwrap_or_else(|_| "127.0.0.1".to_string());
     let port_str = env::var("PORT").unwrap_or_else(|_| "8080".to_string());
@@ -83,14 +79,23 @@ async fn main() -> std::io::Result<()> {
         .ok()
         .and_then(|v| v.parse::<usize>().ok())
         .filter(|&w| w > 0 && w <= 100)
-        .unwrap_or_else(|| num_cpus::get());
+        .unwrap_or_else(num_cpus::get);
 
     let addr = format!("{}:{}", host, port);
     println!("Starting server..");
     println!("Address: http://{}", addr);
     println!("Workers: {}", workers);
 
-    HttpServer::new(|| { App::new().wrap(HttpAuthentication::bearer(auth)).configure(init_routes) })
+    let expected_key = api_key.clone();
+
+    HttpServer::new(move || {
+        let expected_key = expected_key.clone();
+        let auth_middleware = HttpAuthentication::bearer(move |req, credentials|
+            auth(req, credentials, expected_key.clone())
+        );
+
+        App::new().wrap(auth_middleware).configure(init_routes)
+    })
         .workers(workers)
         .bind(&addr)?
         .run().await
