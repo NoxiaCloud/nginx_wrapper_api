@@ -2,8 +2,11 @@
 
 A lightweight REST API built in Rust designed to manage server operations for [Noxia](https://noxia.cloud)
 
+> ⚠️ This project currently only supports systems running Linux
+
 ## ⚙️ Features
 
+- System metrics
 - [NGINX](https://nginx.org) configuration management
 - [Docker](https://docker.io) container deployment
 - Automatic SSL certificates via [Let’s Encrypt](https://letsencrypt.org/)
