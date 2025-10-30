@@ -12,11 +12,12 @@ A lightweight REST API built in Rust designed to manage server operations for [N
 
 ### 🧩 Environment Variables
 
-| Variable   | Description              |
-| ---------- | ------------------------ |
-| API_KEY    | Your secret API key      |
-| HOST       | Server host              |
-| PORT       | Server port              |
-| WORKERS    | Number of worker threads |
-| CF_ZONE_ID | Cloudflare Zone ID       |
-| CF_API_KEY | Cloudflare API Key       |
+| Variable   | Description                                    |
+| ---------- | ---------------------------------------------- |
+| API_KEY    | Your secret API key                            |
+| HOST       | Server host                                    |
+| PORT       | Server port                                    |
+| WORKERS    | Number of worker threads                       |
+| LOG_DIR    | Directory for storing logs; defaults to ./logs |
+| CF_ZONE_ID | Cloudflare Zone ID                             |
+| CF_API_KEY | Cloudflare API Key                             |
