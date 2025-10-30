@@ -39,12 +39,12 @@ async fn auth(
     expected_key: Arc<String>
 ) -> Result<ServiceRequest, (ActixError, ServiceRequest)> {
     let token = credentials.token();
-    let is_valid = !token.is_empty() && token == expected_key.as_str();
+    let expected_key = expected_key.as_str();
 
-    if is_valid {
-        Ok(req)
-    } else {
+    if token.is_empty() || expected_key.is_empty() || token != expected_key {
         Err((ErrorUnauthorized("Authentication required"), req))
+    } else {
+        Ok(req)
     }
 }
 
