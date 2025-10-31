@@ -1,6 +1,7 @@
 # node-agent
 
-A lightweight REST API built in Rust designed to manage server operations for [Noxia](https://noxia.cloud)
+A lightweight REST API built in Rust designed to manage server operations for [Noxia](https://noxia.cloud)<br>
+[Documentation](https://github.com/NoxiaCloud/node-agent/wiki)
 
 > ⚠️ This project currently only supports systems running Linux
 
