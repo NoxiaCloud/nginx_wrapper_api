@@ -17,7 +17,7 @@ A lightweight REST API built in Rust designed to manage server operations for [N
 - Subdomain creation via [Cloudflare](https://cloudflare.com/) REST API
 - GitHub integration; deploy repositories to containers
 
-### 🧩 Environment Variables
+## 🧩 Environment Variables
 
 | Variable   | Description                     |
 | ---------- | ------------------------------- |
